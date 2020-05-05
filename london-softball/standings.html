@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Softball</title>
+  </head>
+  <body>
+    <div class="table-2">
+      <table width="100%">
+        <thead>
+          <tr>
+            <th align="left">Column 1</th>
+            <th align="left">Column 2</th>
+            <th align="left">Column 3</th>
+            <th align="left">Column 4</th>
+          </tr>
+          </thead>
+            <tbody id="minors_3">
+            </tbody>
+        </table>
+      </div>
+    <script>
+      fetch("https://bsf.spawtz.com/External/Fixtures/Feed.aspx?Type=Standings&LeagueId=9&SeasonId=34&DivisionId=667")
+        .then(response => response.text())
+          .then((data) => {
+            let parser = new DOMParser(),
+            xml = parser.parseFromString(data,"text/xml");
+            var teams = xml.getElementsByTagName('Team');
+            console.log(xml.getElementsByTagName('Team'));
+            var team, position, points, games_played;
+            for(i = 0; i < teams.length; i++) {
+              position = teams[i].attributes[14].value;
+              team = teams[i].attributes[1].value;
+              points = teams[i].attributes[10].value;
+              games_played = teams[i].attributes[2].value;
+              const row = `<tr>
+                            <td align="left">${position}</td>
+                            <td align="left">${team}</td>
+                            <td align="left">${games_played}</td>
+                            <td align="left">${points}</td>
+                          </tr>`;
+              const minors_3 = document.querySelector("#minors_3");
+              minors_3.insertAdjacentHTML("beforeend", row);
+            };
+        });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Softball - Fixtures</title>
+  </head>
+  <body>
+    <div class="table-2">
+      <table width="100%">
+        <thead>
+          <tr>
+            <th align="left">Column 1</th>
+            <th align="left">Column 2</th>
+            <th align="left">Column 3</th>
+            <th align="left">Column 4</th>
+          </tr>
+          </thead>
+            <tbody id="majors_1"> <!--key to match with 3 keys below -->
+            </tbody>
+        </table>
+      </div>
+    <script>
+      fetch("http://bsf.spawtz.com/External/Fixtures/Feed.aspx?Type=Fixtures&LeagueId=9&SeasonId=34&DivisionId=662") // change division ID to match from bsf website for dividion //
+        .then(response => response.text())
+          .then((data) => {
+            let parser = new DOMParser(),
+            xml = parser.parseFromString(data,"text/xml");
+            var fixtures = xml.getElementsByTagName('Fixture');
+            console.log(xml.getElementsByTagName('Fixture'));
+            var date, venue, home_team, home_team_score, away_team_score;
+            console.log(fixtures.length);
+            // var fixture, position, points, games_played;
+            for(i = 0; i < fixtures.length; i++) {
+              fixture = fixtures[i].attributes[0].nodeValue;
+              venue = fixtures[i].attributes[6].nodeValue;
+              home_team = fixtures[i].attributes[9].nodeValue;
+              home_team_score = fixtures[i].attributes[10].nodeValue;
+              away_team = fixtures[i].attributes[13].nodeValue;
+              away_team_score = fixtures[i].attributes[14].nodeValue;
+              console.log(fixture, venue, home_team, home_team_score, away_team, away_team_score);
+            //   team = teams[i].attributes[1].value;
+            //   points = teams[i].attributes[10].value;
+            //   games_played = teams[i].attributes[2].value;
+            //   const row = `<tr>
+            //                 <td align="left">${position}</td>
+            //                 <td align="left">${team}</td>
+            //                 <td align="left">${games_played}</td>
+            //                 <td align="left">${points}</td>
+            //               </tr>`;
+            //   const minors_3 = document.querySelector("#minors_3");
+            //   minors_3.insertAdjacentHTML("beforeend", row);
+            };
+        });
+    </script>
+
+  </body>
+</html>
